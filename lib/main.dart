@@ -5,14 +5,15 @@ import 'package:med_consultation/screens/patient/patient_home.dart';
 import 'package:med_consultation/services/auth_service.dart';
 import './screens/splash_screen.dart';
 import './screens/login_screen.dart';
+
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
-  AuthService authService=new AuthService();
-  LocalStorage localStorage=new LocalStorage("mystore");
+  AuthService authService = new AuthService();
+  LocalStorage localStorage = new LocalStorage("mystore");
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -20,35 +21,24 @@ class MyApp extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return MaterialApp(
-              home: SplashScreen(),
-            debugShowCheckedModeBanner: false);
+              home: SplashScreen(), debugShowCheckedModeBanner: false);
         } else {
           var details = localStorage.getItem("details");
-          if(details==null){
+          if (details == null) {
             return MaterialApp(
-                debugShowCheckedModeBanner: false,
-                home: LoginScreen()
-            );
+                debugShowCheckedModeBanner: false, home: LoginScreen());
           }
-            if(details['role']=='2')
-              return MaterialApp(
-                debugShowCheckedModeBanner: false,
-                home: AdminHome()
-              );
-            if(details['role']=='1')
-              return MaterialApp(
-                  debugShowCheckedModeBanner: false,
-                  home: AdminHome()
-              );
-            if(details['role']=='0')
-              return MaterialApp(
-                  debugShowCheckedModeBanner: false,
-                  home: PatientHome()
-              );
+          if (details['role'] == '2')
+            return MaterialApp(
+                debugShowCheckedModeBanner: false, home: AdminHome());
+          if (details['role'] == '1')
+            return MaterialApp(
+                debugShowCheckedModeBanner: false, home: AdminHome());
+          if (details['role'] == '0')
+            return MaterialApp(
+                debugShowCheckedModeBanner: false, home: PatientHome());
           return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              home: LoginScreen()
-          );
+              debugShowCheckedModeBanner: false, home: LoginScreen());
         }
       },
     );

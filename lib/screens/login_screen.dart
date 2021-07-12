@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:med_consultation/models/login_user.dart';
 import 'package:med_consultation/screens/admin/admin_home.dart';
+import 'package:med_consultation/screens/patient/patient_home.dart';
 import 'package:med_consultation/screens/signup_screen.dart';
 import 'package:med_consultation/services/auth_service.dart';
 import 'package:toast/toast.dart';
 import 'dart:convert';
 import 'package:localstorage/localstorage.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key key}) : super(key: key);
 
@@ -14,10 +16,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  AuthService authService=new AuthService();
+  AuthService authService = new AuthService();
   LocalStorage localStorage = new LocalStorage('mystore');
   int _radioValue = 0;
 
@@ -26,22 +27,29 @@ class _LoginScreenState extends State<LoginScreen> {
       _radioValue = value;
     });
   }
+
   bool isEmail(String em) {
-    String p = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    String p =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regExp = new RegExp(p);
 
     return regExp.hasMatch(em);
   }
+
   void validateAndLogin() {
-    if(!isEmail(emailController.text)){
-      Toast.show("Email not valid", context,duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+    if (!isEmail(emailController.text)) {
+      Toast.show("Email not valid", context,
+          duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
       return;
     }
-    if(passwordController.text.length <6){
-      Toast.show("Password should be minimum 6 letters long", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+    if (passwordController.text.length < 6) {
+      Toast.show("Password should be minimum 6 letters long", context,
+          duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
       return;
     }
-    authService.login(new LoginUser(emailController.text,passwordController.text)).then((response) async {
+    authService
+        .login(new LoginUser(emailController.text, passwordController.text))
+        .then((response) async {
       final body = json.decode(response.body);
       var user = body['user'];
       var details = body['details'];
@@ -49,19 +57,24 @@ class _LoginScreenState extends State<LoginScreen> {
       await localStorage.setItem('user', user);
       await localStorage.setItem('details', details);
       //TODO,NAVIGATE after login
-      if(details['role']==0){
+      if (details['role'] == "0") {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => PatientHome()),
+        );
         //TODO patient
-      }else if(details['role']==1){
+      } else if (details['role'] == "1") {
         //TODO doctor
-      }else{
+      } else {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => AdminHome()),
         );
       }
-    }).onError((error, stackTrace){
+    }).onError((error, stackTrace) {
       print(error);
-      Toast.show("Some error occured", context,duration: Toast.LENGTH_SHORT,gravity: Toast.BOTTOM);
+      Toast.show("Some error occured", context,
+          duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
       return;
     });
   }
@@ -147,9 +160,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
 
-
                 TextButton(
-                  onPressed: (){
+                  onPressed: () {
                     //forgot password screen
                     //TODO : add forget password feature
                   },
@@ -168,25 +180,26 @@ class _LoginScreenState extends State<LoginScreen> {
                     )),
                 Container(
                     child: Row(
-                      children: <Widget>[
-                        Text('Does not have account?'),
-                        FlatButton(
-                          textColor: Colors.blue,
-                          child: Text(
-                            'Sign up',
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          onPressed: () {
-                            //signup screen
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (context) => SignupScreen()),
-                            );
-                          },
-                        )
-                      ],
-                      mainAxisAlignment: MainAxisAlignment.center,
-                    ))
+                  children: <Widget>[
+                    Text('Does not have account?'),
+                    FlatButton(
+                      textColor: Colors.blue,
+                      child: Text(
+                        'Sign up',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      onPressed: () {
+                        //signup screen
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SignupScreen()),
+                        );
+                      },
+                    )
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                ))
               ],
             )));
   }
