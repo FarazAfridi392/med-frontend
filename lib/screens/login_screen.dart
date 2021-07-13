@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:med_consultation/models/login_user.dart';
 import 'package:med_consultation/screens/admin/admin_home.dart';
+import 'package:med_consultation/screens/doctor/doctor_home.dart';
 import 'package:med_consultation/screens/patient/patient_home.dart';
 import 'package:med_consultation/screens/signup_screen.dart';
 import 'package:med_consultation/services/auth_service.dart';
@@ -64,7 +65,10 @@ class _LoginScreenState extends State<LoginScreen> {
         );
         //TODO patient
       } else if (details['role'] == "1") {
-        //TODO doctor
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => DoctorHome()),
+        );
       } else {
         Navigator.pushReplacement(
           context,

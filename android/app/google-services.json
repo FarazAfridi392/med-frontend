@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "777241579523",
+    "firebase_url": "https://med-consultation-7437a-default-rtdb.firebaseio.com",
+    "project_id": "med-consultation-7437a",
+    "storage_bucket": "med-consultation-7437a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:777241579523:android:ccf63ec5c67807eb88be36",
+        "android_client_info": {
+          "package_name": "com.adib.med_consultation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "777241579523-spgarca4vgsm555cn8j1bdp7k1cbav4m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB24no615lv1ad8MAVuhFd9if5vtYQWaXg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "777241579523-spgarca4vgsm555cn8j1bdp7k1cbav4m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

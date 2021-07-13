@@ -2,22 +2,22 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import 'package:med_consultation/screens/login_screen.dart';
 import 'package:med_consultation/services/auth_service.dart';
-import 'package:med_consultation/services/patient_service.dart';
+import 'package:med_consultation/services/doctor_service.dart';
 import 'package:http/http.dart' as http;
 
-class PatientHome extends StatefulWidget {
-  const PatientHome({Key key}) : super(key: key);
+import '../login_screen.dart';
+
+class DoctorHome extends StatefulWidget {
+  const DoctorHome({Key key}) : super(key: key);
 
   @override
-  _PatientHomeState createState() => _PatientHomeState();
+  _DoctorHomeState createState() => _DoctorHomeState();
 }
 
-class _PatientHomeState extends State<PatientHome> {
-  PatientService patientService = new PatientService();
+class _DoctorHomeState extends State<DoctorHome> {
+  DoctorService doctorService = new DoctorService();
   AuthService authService = new AuthService();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,14 +37,14 @@ class _PatientHomeState extends State<PatientHome> {
         ],
       ),
       body: FutureBuilder(
-        future: patientService.getAllDoctors(),
+        future: doctorService.getAllPatients(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: new CircularProgressIndicator());
           } else {
             http.Response response = snapshot.data;
             return Column(
-              children: getDoctorList(response),
+              children: getPatientList(response),
             );
           }
         },
@@ -52,11 +52,11 @@ class _PatientHomeState extends State<PatientHome> {
     );
   }
 
-  List<Widget> getDoctorList(http.Response response) {
+  List<Widget> getPatientList(http.Response response) {
     List<dynamic> body = json.decode(response.body);
     List<Widget> widgetList = [];
     if (body.isEmpty) {
-      widgetList.add(Text("No doctors available"));
+      widgetList.add(Text("No patients available"));
     } else {
       body.forEach((element) {
         widgetList.add(Container(
@@ -66,8 +66,7 @@ class _PatientHomeState extends State<PatientHome> {
             onTap: () {
               // Navigator.of(context).push(MaterialPageRoute(
               //   builder: (context) => ChatPage(
-              //     peerId: element['email'],
-              //     peerAvatar: element['email'][0].toUpperCase(),
+              //     email: element['email'],
               //   ),
               // ));
             },
