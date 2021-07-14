@@ -1,22 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:med_consultation/utils.dart';
+
+class UserField {
+  static final String lastMessageTime = 'lastMessageTime';
+}
+
 class User {
-  String email;
-  String password;
-  String role;
+  final String email;
+  final String password;
+  final String role;
 
-  User(this.email, this.password, this.role);
+  const User({
+    this.email,
+    @required this.password,
+    @required this.role,
+  });
 
-  User.fromJson(Map<String, dynamic> json) {
-    email = json['email'];
-    password = json['password'];
-    role = json['role'];
-  }
+  User copyWith({
+    String email,
+    String password,
+    String role,
+  }) =>
+      User(
+        email: email ?? this.email,
+        password: password ?? this.password,
+        role: role ?? this.role,
+      );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['email'] = this.email;
-    data['password'] = this.password;
-    data['role'] = this.role;
-    return data;
-  }
+  static User fromJson(Map<String, dynamic> json) => User(
+        email: json['email'],
+        password: json['password'],
+        role: json['role'],
+      );
+
+  Map<String, dynamic> toJson() => {
+        'email': email,
+        'password': password,
+        'role': role,
+      };
 }

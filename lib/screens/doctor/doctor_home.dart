@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:med_consultation/components/chat_room.dart';
+import 'package:med_consultation/models/user.dart';
 
 import 'package:med_consultation/services/auth_service.dart';
 import 'package:med_consultation/services/doctor_service.dart';
@@ -18,6 +20,7 @@ class DoctorHome extends StatefulWidget {
 class _DoctorHomeState extends State<DoctorHome> {
   DoctorService doctorService = new DoctorService();
   AuthService authService = new AuthService();
+  User user;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,11 +67,13 @@ class _DoctorHomeState extends State<DoctorHome> {
           height: 75,
           child: ListTile(
             onTap: () {
-              // Navigator.of(context).push(MaterialPageRoute(
-              //   builder: (context) => ChatPage(
-              //     email: element['email'],
-              //   ),
-              // ));
+              user = User(
+                  email: element['email'],
+                  password: element['password'],
+                  role: element['role']);
+
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ChatPage(user: user)));
             },
             leading: CircleAvatar(
               radius: 25,

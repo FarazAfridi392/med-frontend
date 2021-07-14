@@ -1,15 +1,19 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:med_consultation/data.dart';
 import 'package:med_consultation/screens/admin/admin_home.dart';
+import 'package:med_consultation/screens/doctor/doctor_home.dart';
 import 'package:med_consultation/screens/patient/patient_home.dart';
 import 'package:med_consultation/services/auth_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './screens/splash_screen.dart';
 import './screens/login_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  Chat.sharedPreferences = await SharedPreferences.getInstance();
 
   runApp(MyApp());
 }
@@ -37,7 +41,7 @@ class MyApp extends StatelessWidget {
                 debugShowCheckedModeBanner: false, home: AdminHome());
           if (details['role'] == '1')
             return MaterialApp(
-                debugShowCheckedModeBanner: false, home: AdminHome());
+                debugShowCheckedModeBanner: false, home: DoctorHome());
           if (details['role'] == '0')
             return MaterialApp(
                 debugShowCheckedModeBanner: false, home: PatientHome());

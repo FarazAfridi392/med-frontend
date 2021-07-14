@@ -46,7 +46,7 @@ class _SignupScreenState extends State<SignupScreen> {
       return;
     }
 
-    authService.signup(new User(emailController.text,passwordController.text,_radioValue)).then((response) {
+    authService.signup(new User(email: emailController.text,password: passwordController.text,role:_radioValue)).then((response) {
     if(response.statusCode!=200){
         Toast.show("Some error occured", context,duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
         return;

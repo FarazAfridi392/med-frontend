@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:med_consultation/components/chat_room.dart';
+import 'package:med_consultation/models/user.dart';
 
 import 'package:med_consultation/screens/login_screen.dart';
 import 'package:med_consultation/services/auth_service.dart';
@@ -53,6 +55,7 @@ class _PatientHomeState extends State<PatientHome> {
   }
 
   List<Widget> getDoctorList(http.Response response) {
+    User user;
     List<dynamic> body = json.decode(response.body);
     List<Widget> widgetList = [];
     if (body.isEmpty) {
@@ -64,12 +67,16 @@ class _PatientHomeState extends State<PatientHome> {
           height: 75,
           child: ListTile(
             onTap: () {
-              // Navigator.of(context).push(MaterialPageRoute(
-              //   builder: (context) => ChatPage(
-              //     peerId: element['email'],
-              //     peerAvatar: element['email'][0].toUpperCase(),
-              //   ),
-              // ));
+              user = User(
+                  email: element['email'],
+                  password: element['password'],
+                  role: element['role']);
+
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => ChatPage(
+                  user: user,
+                ),
+              ));
             },
             leading: CircleAvatar(
               radius: 25,

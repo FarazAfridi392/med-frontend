@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:med_consultation/data.dart';
 import 'package:med_consultation/models/login_user.dart';
 import 'package:med_consultation/screens/admin/admin_home.dart';
 import 'package:med_consultation/screens/doctor/doctor_home.dart';
 import 'package:med_consultation/screens/patient/patient_home.dart';
 import 'package:med_consultation/screens/signup_screen.dart';
 import 'package:med_consultation/services/auth_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'dart:convert';
 import 'package:localstorage/localstorage.dart';
@@ -54,9 +56,10 @@ class _LoginScreenState extends State<LoginScreen> {
       final body = json.decode(response.body);
       var user = body['user'];
       var details = body['details'];
-      print(details);
+
       await localStorage.setItem('user', user);
       await localStorage.setItem('details', details);
+      await Chat.sharedPreferences.setString(Chat.myName, details['email']);
       //TODO,NAVIGATE after login
       if (details['role'] == "0") {
         Navigator.pushReplacement(
