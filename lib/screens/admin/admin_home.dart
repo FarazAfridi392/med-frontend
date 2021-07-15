@@ -22,63 +22,59 @@ class _AdminHomeState extends State<AdminHome> {
       appBar: AppBar(
         title: Text('Consult Doctor | Admin'),
         actions: [
-          IconButton(onPressed: (){
-            authService.logout();
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) =>LoginScreen()),
-            );
-          }, icon: const Icon(Icons.logout))
+          IconButton(
+              onPressed: () {
+                authService.logout();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                );
+              },
+              icon: const Icon(Icons.logout))
         ],
       ),
       body: FutureBuilder(
           future: adminService.getAllAccountRequests(),
           builder: (context, snapshot) {
-            if (snapshot.connectionState!=ConnectionState.waiting) {
+            if (snapshot.connectionState != ConnectionState.waiting) {
               Response response = snapshot.data;
-                return new Column (
-                  children: <Widget>[
-                    new Expanded(
-                        child: new ListView(
-                          children:
-                            _getRow(response)
-                        ))
-                  ],
-                );
-            }else{
-              return new CircularProgressIndicator();
+              return new Column(
+                children: <Widget>[
+                  new Expanded(child: new ListView(children: _getRow(response)))
+                ],
+              );
+            } else {
+              return Center(child: new CircularProgressIndicator());
             }
-          }
-      ),
+          }),
     );
   }
-
 
   List<Widget> _getRow(Response response) {
     List<dynamic> body = json.decode(response.body);
     print(response.body);
-    List <Widget> widgetList= [];
-    if(body.isEmpty){
-      widgetList.add(Text("No request available"));
+    List<Widget> widgetList = [];
+    if (body.isEmpty) {
+      widgetList.add(Center(child: Text("No request available")));
       return widgetList;
     }
     body.forEach((element) {
       widgetList.add(Container(
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("email:"+element['email']),
-            IconButton(icon: const Icon(Icons.check), onPressed: (){
-              adminService.acceptAccountRequest(element['uid']).then((value) => setState(() {
-              }));
-
-
-            })
+            Text("email:" + element['email']),
+            IconButton(
+                icon: const Icon(Icons.check),
+                onPressed: () {
+                  adminService
+                      .acceptAccountRequest(element['uid'])
+                      .then((value) => setState(() {}));
+                })
           ],
         ),
-      )
-      );
+      ));
     });
     return widgetList;
-
   }
 }

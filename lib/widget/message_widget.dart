@@ -20,7 +20,7 @@ class MessageWidget extends StatelessWidget {
       children: <Widget>[
         if (!isMe)
           CircleAvatar(
-              radius: 16,child: Text(message.email[0].toUpperCase()),),
+              radius: 16,child: Text(message.receiverEmail[0].toUpperCase()),),
         Container(
           padding: EdgeInsets.all(16),
           margin: EdgeInsets.all(16),

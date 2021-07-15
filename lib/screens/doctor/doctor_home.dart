@@ -27,7 +27,6 @@ class _DoctorHomeState extends State<DoctorHome> {
       appBar: AppBar(
         title: Text('Home'),
         actions: [
-          IconButton(icon: const Icon(Icons.message), onPressed: () {}),
           IconButton(
               onPressed: () {
                 authService.logout();

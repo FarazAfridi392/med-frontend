@@ -16,7 +16,7 @@ class NewMessageWidget extends StatefulWidget {
 
 class _NewMessageWidgetState extends State<NewMessageWidget> {
   final _controller = TextEditingController();
-  String message = '';
+  String message;
 
   void sendMessage() async {
     FocusScope.of(context).unfocus();
@@ -55,7 +55,7 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
             ),
             SizedBox(width: 20),
             GestureDetector(
-              onTap: message.trim().isEmpty ? null : sendMessage,
+              onTap: sendMessage,
               child: Container(
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(

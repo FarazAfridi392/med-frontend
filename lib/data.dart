@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Chat {
   static SharedPreferences sharedPreferences;
   static final String myName = 'name';
+  static final String userEmail = 'name';
   String myUsername;
   String myUrlAvatar;
 }

@@ -15,9 +15,8 @@ class MessagesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(idUser);
     return StreamBuilder<List<Message>>(
-      stream: FirebaseApi.getMessages(idUser),
+      stream: FirebaseApi.getMessages(),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
@@ -28,22 +27,30 @@ class MessagesWidget extends StatelessWidget {
             } else {
               final messages = snapshot.data;
 
-              return messages.isEmpty
-                  ? buildText('Say Hi..')
-                  : ListView.builder(
-                      physics: BouncingScrollPhysics(),
-                      reverse: true,
-                      itemCount: messages.length,
-                      itemBuilder: (context, index) {
-                        final message = messages[index];
+              return ListView.builder(
+                physics: BouncingScrollPhysics(),
+                reverse: true,
+                itemCount: messages.length,
+                itemBuilder: (context, index) {
+                  final message = messages[index];
+                  print(message.createdAt);
 
-                        return MessageWidget(
+                  return (message.senderEmail ==
+                                  Chat.sharedPreferences
+                                      .getString(Chat.myName) &&
+                              message.receiverEmail == idUser) ||
+                          (message.receiverEmail ==
+                                  Chat.sharedPreferences
+                                      .getString(Chat.myName) &&
+                              message.senderEmail == idUser)
+                      ? MessageWidget(
                           message: message,
-                          isMe: message.email ==
+                          isMe: message.senderEmail ==
                               Chat.sharedPreferences.getString(Chat.myName),
-                        );
-                      },
-                    );
+                        )
+                      : SizedBox();
+                },
+              );
             }
         }
       },

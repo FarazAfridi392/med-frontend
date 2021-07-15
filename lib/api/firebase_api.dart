@@ -15,13 +15,11 @@ class FirebaseApi {
       .transform(Utils.transformer(User.fromJson));
 
   static Future uploadMessage(String email, String message) async {
-    final refMessages =
-        FirebaseFirestore.instance.collection('chats/$email/messages');
+    final refMessages = FirebaseFirestore.instance.collection('chats');
 
     final newMessage = Message(
-      email: Chat.sharedPreferences.getString(Chat.myName),
-      urlAvatar: Chat.sharedPreferences.getString(Chat.myName[0].toUpperCase()),
-      username: 'faraz',
+      senderEmail: Chat.sharedPreferences.getString(Chat.myName),
+      receiverEmail: email,
       message: message,
       createdAt: DateTime.now(),
     );
@@ -33,9 +31,9 @@ class FirebaseApi {
         .update({UserField.lastMessageTime: DateTime.now()});
   }
 
-  static Stream<List<Message>> getMessages(String email) =>
+  static Stream<List<Message>> getMessages() =>
       FirebaseFirestore.instance
-          .collection('chats/$email/messages')
+          .collection('chats')
           .orderBy(MessageField.createdAt, descending: true)
           .snapshots()
           .transform(Utils.transformer(Message.fromJson));
