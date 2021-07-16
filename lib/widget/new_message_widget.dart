@@ -20,10 +20,9 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
 
   void sendMessage() async {
     FocusScope.of(context).unfocus();
+    _controller.clear();
 
     await FirebaseApi.uploadMessage(widget.idUser, message);
-
-    _controller.clear();
   }
 
   @override

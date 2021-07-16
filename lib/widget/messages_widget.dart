@@ -33,7 +33,6 @@ class MessagesWidget extends StatelessWidget {
                 itemCount: messages.length,
                 itemBuilder: (context, index) {
                   final message = messages[index];
-                  print(message.createdAt);
 
                   return (message.senderEmail ==
                                   Chat.sharedPreferences

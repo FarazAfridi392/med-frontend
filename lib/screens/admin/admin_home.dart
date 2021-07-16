@@ -55,23 +55,41 @@ class _AdminHomeState extends State<AdminHome> {
     print(response.body);
     List<Widget> widgetList = [];
     if (body.isEmpty) {
-      widgetList.add(Center(child: Text("No request available")));
+      widgetList.add(Center(
+          child: Text(
+        "No request available",
+        style: TextStyle(fontWeight: FontWeight.bold),
+      )));
       return widgetList;
     }
     body.forEach((element) {
       widgetList.add(Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("email:" + element['email']),
-            IconButton(
-                icon: const Icon(Icons.check),
-                onPressed: () {
-                  adminService
-                      .acceptAccountRequest(element['uid'])
-                      .then((value) => setState(() {}));
-                })
-          ],
+        padding: EdgeInsets.only(top: 8),
+        child: ListTile(
+          leading: CircleAvatar(
+            radius: 25,
+            child: Text(
+              element['email'][0].toUpperCase(),
+            ),
+          ),
+          title: Text(
+            element['email'],
+            overflow: TextOverflow.ellipsis,
+          ),
+          trailing: MaterialButton(
+              child: Container(
+                height: 20,
+                width: 60,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.blue),
+                child: Center(child: Text('Accept')),
+              ),
+              onPressed: () {
+                adminService
+                    .acceptAccountRequest(element['uid'])
+                    .then((value) => setState(() {}));
+              }),
         ),
       ));
     });
